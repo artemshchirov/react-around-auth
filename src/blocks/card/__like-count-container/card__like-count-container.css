@@ -1,0 +1,7 @@
+.card__like-count-container {
+    height: 35px;
+    width: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

@@ -1,0 +1,12 @@
+.button_like {
+    width: 22px;
+    height: 19px;
+    background-image: url('../../../images/like_disabled.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: #fff;
+}
+
+.button_like:hover {
+    opacity: .5;
+}

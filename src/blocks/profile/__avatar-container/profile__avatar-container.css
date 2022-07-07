@@ -1,0 +1,16 @@
+.profile__avatar-container {
+  margin: 3px 24.12px;
+  width: 120px;
+  height: 120px;
+  background-image: url('../../../images/edit_btn.svg');
+  background-size: 26px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1024px) {
+  .profile__avatar-container {
+    margin-left: 0;
+  }
+}

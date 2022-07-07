@@ -1,0 +1,12 @@
+.form {
+    width: 238px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 698px) {
+    .form {
+        width: 358px;
+    }
+}
