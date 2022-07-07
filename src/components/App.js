@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -10,6 +11,7 @@ import Spinner from "./Spinner";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import SubmitPopup from "./SubmitPopup";
+import Login from "./Login";
 
 export default function App() {
   const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
@@ -185,21 +187,39 @@ export default function App() {
     <div className="page">
       <div className="page__container">
         <CurrentUserContext.Provider value={currentUser}>
-          <Header />
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            <Main
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddCardClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDelete={handleSubmitDeleteClick}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Header />
+                  {isLoading ? (
+                    <Spinner />
+                  ) : (
+                    <Main
+                      onEditProfile={handleEditProfileClick}
+                      onAddPlace={handleAddCardClick}
+                      onEditAvatar={handleEditAvatarClick}
+                      onCardClick={handleCardClick}
+                      cards={cards}
+                      onCardLike={handleCardLike}
+                      onCardDelete={handleSubmitDeleteClick}
+                    />
+                  )}
+                  <Footer />
+                </>
+              }
             />
-          )}
-          <Footer />
+            <Route
+              path="/sign-in"
+              element={
+                <>
+                  <Header linkText="Регистрация" />
+                  <Login validateForm={handleFormValidation} />
+                </>
+              }
+            />
+          </Routes>
 
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}

@@ -26,7 +26,6 @@ export default function EditAvatarPopup({
   }
 
   useEffect(() => {
-    console.log(avatarRef.current);
     avatarRef.current.value = "";
     validateForm(
       avatarRef.current,

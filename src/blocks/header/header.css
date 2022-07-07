@@ -2,11 +2,13 @@
     max-width: 320px;
     border-bottom: 1px solid rgba(84, 84, 84, 0.7);
     padding-bottom: 31.6px;
+    display: flex;
+    justify-content: space-between;
 }
 
 @media screen and (min-width: 698px) {
     .header {
-        padding-bottom: 41px;
+        padding: 17px 0 41px;
         max-width: calc(698px - 50px*2);
     }
 }
