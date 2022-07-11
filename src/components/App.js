@@ -11,7 +11,7 @@ import api from "../utils/api";
 import SubmitPopup from "./SubmitPopup";
 import Login from "./Login";
 import Register from "./Register";
-import { register } from "../utils/auth";
+import { register, authorize, getContent } from "../utils/auth";
 
 const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
@@ -62,63 +62,51 @@ const App = () => {
 
   const tokenCheck = () => {
     let jwt = localStorage.getItem("jwt");
+    console.log("tokenCheck jwt:", jwt);
     if (jwt) {
-      api.getContent(jwt).then((res) => {
-        if (res.email) {
-          localStorage.setItem("jwt", res.jwt);
-          setUserData({
-            username: res.user.username,
-            email: res.user.email,
-          });
+      getContent(jwt)
+        .then((res) => {
+          console.log("tokenCheck getContent res:", res);
+          console.log("tokenCheck email:", res.email);
           setLoggedIn(true);
-          navigate("/");
-        }
-      });
+          navigate("/")
+        })
+        .catch((err) =>
+          console.error(`Ошибка получения контента пользователя, код: ${err}`)
+        );
     }
   };
 
-  const [userData, setUserData] = useState({});
-
   const handleRegister = (email, password) => {
     console.log("handleRegister email, password:", email, password);
-    register(password, email).then((data) => {
-      console.log("handleRegister data:", data);
-      if (data._id) {
-        console.log("data.jwt:", data._id);
-        localStorage.setItem("jwt", data._id);
-        // setUserData({
-        //   email: data.user.email,
-        //   password: data.user.password,
-        // });
-        // setLoggedIn(true);
-      }
-    });
+    register(password, email)
+      .then(() => {
+        setLoggedIn(true);
+        navigate("/sign-in");
+      })
+      .catch((err) =>
+        console.error(`Ошибка регистрации пользователя, код: ${err}`)
+      );
   };
 
   const handleLogin = (email, password) => {
-    console.log("handleLogin: ", handleLogin);
-
-    api.authorize(email, password).then((res) => {
-      console.log("handleLogin: ", res);
-      if (res.jwt) {
-        localStorage.setItem("jwt", res.jwt);
-        setUserData({
-          email: res.user.email,
-          password: res.user.password,
-        });
-        setLoggedIn(true);
-        navigate("/");
-      }
-    });
+    authorize(email, password)
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem("jwt", res.token);
+          setLoggedIn(true);
+          navigate("/");
+        }
+      })
+      .catch((err) =>
+        console.error(`Ошибка авторизации пользователя, код: ${err}`)
+      );
   };
 
   const handleLogout = () => {
     localStorage.removeItem("jwt");
-    setUserData({
-      username: "",
-      email: "",
-    });
     setLoggedIn(false);
+    navigate("/sign-in");
   };
 
   function handleEditAvatarClick() {
