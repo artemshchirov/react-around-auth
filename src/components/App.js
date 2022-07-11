@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useHistory } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -12,8 +12,9 @@ import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import SubmitPopup from "./SubmitPopup";
 import Login from "./Login";
+import Register from "./Register";
 
-export default function App() {
+const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -24,6 +25,82 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitPopupOpen, setIsSubmitPopupOpen] = useState(false);
   const [currentCard, setCurrentCard] = useState({});
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    api
+      .getUserInfo()
+      .then(({ name, about, avatar, _id }) => {
+        setCurrentUser({ name, about, avatar, _id });
+      })
+      .catch((err) =>
+        console.log(`Ошибка при загрузке данных пользователя: ${err}`)
+      )
+      .finally(() => {
+        setIsLoading(false);
+      });
+
+    api
+      .getInitialCards()
+      .then((initialCards) => setCards(initialCards))
+      .catch((err) =>
+        console.log(
+          `Ошибка при загрузке данных пользователя и создании всех карточек: ${err}`
+        )
+      )
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  const tokenCheck = () => {
+    let jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      api.getContent(jwt).then((res) => {
+        if (res.email) {
+          localStorage.setItem("jwt", res.jwt);
+          setUserData({
+            username: res.user.username,
+            email: res.user.email,
+          });
+          setLoggedIn(true);
+          history.push("/");
+        }
+      });
+    }
+  };
+
+  const handleLogin = (email, password) => {
+    api.authorize(email, password).then((res) => {
+      console.log("handleLogin: ", res);
+      if (res.jwt) {
+        localStorage.setItem("jwt", res.jwt);
+        setUserData({
+          email: res.user.email,
+          password: res.user.password,
+        });
+        setLoggedIn(true);
+        history.push("/");
+      }
+    });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    setUserData({
+      username: "",
+      email: "",
+    });
+    setLoggedIn(false);
+  };
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -156,32 +233,22 @@ export default function App() {
       });
   }
 
-  useEffect(() => {
-    setIsLoading(true);
-    api
-      .getUserInfo()
-      .then(({ name, about, avatar, _id }) => {
-        setCurrentUser({ name, about, avatar, _id });
-      })
-      .catch((err) =>
-        console.log(`Ошибка при загрузке данных пользователя: ${err}`)
-      )
-      .finally(() => {
-        setIsLoading(false);
-      });
+  const [userData, setUserData] = useState({});
 
-    api
-      .getInitialCards()
-      .then((initialCards) => setCards(initialCards))
-      .catch((err) =>
-        console.log(
-          `Ошибка при загрузке данных пользователя и создании всех карточек: ${err}`
-        )
-      )
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  const handleRegister = (username, password, email) => {
+    console.log(username, password, email);
+    api.register(username, password, email).then((data) => {
+      if (data.jwt) {
+        localStorage.setItem("jwt", data.jwt);
+        setUserData({
+          username: data.user.username,
+          email: data.user.email,
+        });
+        setLoggedIn(true);
+        history.push("/sign-in");
+      }
+    });
+  };
 
   return (
     <div className="page">
@@ -192,7 +259,7 @@ export default function App() {
               path="/"
               element={
                 <>
-                  <Header />
+                  <Header linkText="Выйти" handleLogout={handleLogout} />
                   {isLoading ? (
                     <Spinner />
                   ) : (
@@ -219,6 +286,22 @@ export default function App() {
                 </>
               }
             />
+            <Route
+              path="/sign-up"
+              element={
+                <>
+                  <Header linkText="Вход" />
+                  <Register
+                    handleRegister={handleRegister}
+                    validateForm={handleFormValidation}
+                  />
+                </>
+              }
+            />
+
+            {/* <Route>
+              {loggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />}
+            </Route> */}
           </Routes>
 
           <EditProfilePopup
@@ -252,4 +335,6 @@ export default function App() {
       </div>
     </div>
   );
-}
+};
+
+export default App;

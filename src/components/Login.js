@@ -1,29 +1,34 @@
 import { useState } from "react";
 
-function Login({ validateForm }) {
-  
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Login({ handleLogin, validateForm }) {
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  // function handleChangeEmail(evt) {
+  //   setEmail(evt.target.value);
+  //   validateForm(evt.target.value, setIsEmailValid);
+  // }
+  // function handleChangePassword(evt) {
+  //   setPassword(evt.target.value);
+  //   validateForm(evt.target.value);
+  // }
 
-  const [emailErrorMessage, setEmailErrorMessage] = useState("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [loginData, setLoginData] = useState({});
 
-  function handleChangeEmail(evt) {
-    setEmail(evt.target.value);
-    validateForm(evt.target.value, setIsEmailValid);
-  }
+  // const [message, setMessage] = useState("");
 
-  function handleChangePassword(evt) {
-    setPassword(evt.target.value);
-    validateForm(evt.target.value);
-  }
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setLoginData((oldData) => ({
+      ...oldData,
+      [name]: value,
+    }));
+  };
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    console.log("login evt:", evt);
+    const { email, password } = loginData;
+    if (!email || !password) return;
+    handleLogin(email, password);
   }
 
   return (
@@ -39,17 +44,15 @@ function Login({ validateForm }) {
           placeholder="Email"
           minLength="2"
           maxLength="40"
-          value={email || ""}
-          onChange={handleChangeEmail}
+          value={loginData["email"] || ""}
+          onChange={handleChange}
           required
         />
         <span
           id="email-error"
-          className={`entry__input-error ${
-            !isEmailValid && "entry__input-error_visible"
-          }`}
+          className={`entry__input-error ${"entry__input-error_visible"}`}
         >
-          {!isEmailValid && emailErrorMessage}
+          {/* {!isEmailValid && emailErrorMessage} */}
         </span>
         <input
           className={`entry__input ${"entry__input_type_error"}`}
@@ -59,8 +62,8 @@ function Login({ validateForm }) {
           placeholder="Пароль"
           minLength="2"
           maxLength="200"
-          value={password || ""}
-          onChange={handleChangePassword}
+          value={loginData["password"] || ""}
+          onChange={handleChange}
           required
         />
         {/* <span
