@@ -70,5 +70,6 @@
 @import url(./blocks/entry/__wrapper/entry__wrapper.css);
 @import url(./blocks/entry/__title/entry__title.css);
 @import url(./blocks/entry/__input/entry__input.css);
+@import url(./blocks/entry/__input/_type/entry__input_type_error.css);
 /* spinner */
 @import url(./blocks/spinner/spinner.css);

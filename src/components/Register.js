@@ -1,5 +1,4 @@
 import { useState } from "react";
-import EntryForm from "./EntryForm";
 
 function Register({ handleRegister }) {
   // const [username, setUsername] = useState("");

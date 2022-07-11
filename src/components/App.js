@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useHistory } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -28,7 +28,7 @@ const App = () => {
 
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     tokenCheck();
@@ -72,13 +72,15 @@ const App = () => {
             email: res.user.email,
           });
           setLoggedIn(true);
-          history.push("/");
+          navigate("/");
         }
       });
     }
   };
 
   const handleLogin = (email, password) => {
+    console.log("handleLogin: ", handleLogin);
+
     api.authorize(email, password).then((res) => {
       console.log("handleLogin: ", res);
       if (res.jwt) {
@@ -88,7 +90,7 @@ const App = () => {
           password: res.user.password,
         });
         setLoggedIn(true);
-        history.push("/");
+        navigate("/");
       }
     });
   };
@@ -245,7 +247,7 @@ const App = () => {
           email: data.user.email,
         });
         setLoggedIn(true);
-        history.push("/sign-in");
+        navigate("/sign-in");
       }
     });
   };
@@ -282,7 +284,10 @@ const App = () => {
               element={
                 <>
                   <Header linkText="Регистрация" />
-                  <Login validateForm={handleFormValidation} />
+                  <Login
+                    handleLogin={handleLogin}
+                    validateForm={handleFormValidation}
+                  />
                 </>
               }
             />

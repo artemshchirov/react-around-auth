@@ -1,34 +1,41 @@
 import { useState } from "react";
 
 function Login({ handleLogin, validateForm }) {
-  const [errorMessage, setErrorMessage] = useState("");
-
-  // function handleChangeEmail(evt) {
-  //   setEmail(evt.target.value);
-  //   validateForm(evt.target.value, setIsEmailValid);
-  // }
-  // function handleChangePassword(evt) {
-  //   setPassword(evt.target.value);
-  //   validateForm(evt.target.value);
-  // }
+  const [isValid, setIsValid] = useState(true);
+  const [validationMessage, setValidationMessage] = useState({});
 
   const [loginData, setLoginData] = useState({});
 
-  // const [message, setMessage] = useState("");
-
   const handleChange = (evt) => {
-    const { name, value } = evt.target;
+    const input = evt.target;
+    const { name, value } = input;
+
     setLoginData((oldData) => ({
       ...oldData,
       [name]: value,
     }));
+
+    setIsValid(input.closest("form").checkValidity());
+    setValidationMessage({
+      ...validationMessage,
+      [name]: input.validationMessage,
+    });
   };
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    const { email, password } = loginData;
-    if (!email || !password) return;
-    handleLogin(email, password);
+
+    if (evt.target.closest("form").checkValidity()) {
+      const { email, password } = loginData;
+      if (!email || !password) return;
+      handleLogin(email, password);
+    } else {
+      setIsValid(false);
+      setValidationMessage({
+        email: "Please insert correct email",
+        password: "Please insert correct password",
+      });
+    }
   }
 
   return (
@@ -37,7 +44,9 @@ function Login({ handleLogin, validateForm }) {
         <legend className="entry__title">Вход</legend>
 
         <input
-          className={`entry__input ${"entry__input_type_error"}`}
+          className={`entry__input ${
+            validationMessage.email && "entry__input_type_error"
+          }`}
           name="email"
           id="email"
           type="email"
@@ -50,12 +59,16 @@ function Login({ handleLogin, validateForm }) {
         />
         <span
           id="email-error"
-          className={`entry__input-error ${"entry__input-error_visible"}`}
+          className={`entry__input-error ${
+            !isValid && "entry__input-error_visible"
+          }`}
         >
-          {/* {!isEmailValid && emailErrorMessage} */}
+          {validationMessage.email}
         </span>
         <input
-          className={`entry__input ${"entry__input_type_error"}`}
+          className={`entry__input ${
+            validationMessage.password && "entry__input_type_error"
+          }`}
           name="password"
           id="password"
           type="password"
@@ -66,20 +79,19 @@ function Login({ handleLogin, validateForm }) {
           onChange={handleChange}
           required
         />
-        {/* <span
-            id="about-edit-error"
-            className={`form__input-error ${
-              !isDescriptionValid && "form__input-error_visible"
-            }`}
-          >
-            {!isDescriptionValid && descriptionErrorMessage}
-          </span> */}
-
+        <span
+          id="password-error"
+          className={`entry__input-error ${
+            !isValid && "entry__input-error_visible"
+          }`}
+        >
+          {validationMessage.password}
+        </span>
         <button
-          className={`button button_form_submit-entry`}
-          // className={`button button_form_submit-entry ${"button_disabled"}`}
+          className={`button button_form_submit-entry ${
+            !isValid && "button_disabled"
+          }`}
           type="submit"
-          // disabled={!props.buttonActive}
         >
           Войти
         </button>
