@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Header from "./Header";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Main from "./Main";
-import Footer from "./Footer";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup";
 import Spinner from "./Spinner";
 import api from "../utils/api";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import SubmitPopup from "./SubmitPopup";
 import Login from "./Login";
 import Register from "./Register";
+import { register } from "../utils/auth";
 
 const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
@@ -76,6 +75,24 @@ const App = () => {
         }
       });
     }
+  };
+
+  const [userData, setUserData] = useState({});
+
+  const handleRegister = (email, password) => {
+    console.log("handleRegister email, password:", email, password);
+    register(password, email).then((data) => {
+      console.log("handleRegister data:", data);
+      if (data._id) {
+        console.log("data.jwt:", data._id);
+        localStorage.setItem("jwt", data._id);
+        // setUserData({
+        //   email: data.user.email,
+        //   password: data.user.password,
+        // });
+        // setLoggedIn(true);
+      }
+    });
   };
 
   const handleLogin = (email, password) => {
@@ -235,23 +252,6 @@ const App = () => {
       });
   }
 
-  const [userData, setUserData] = useState({});
-
-  const handleRegister = (username, password, email) => {
-    console.log(username, password, email);
-    api.register(username, password, email).then((data) => {
-      if (data.jwt) {
-        localStorage.setItem("jwt", data.jwt);
-        setUserData({
-          username: data.user.username,
-          email: data.user.email,
-        });
-        setLoggedIn(true);
-        navigate("/sign-in");
-      }
-    });
-  };
-
   return (
     <div className="page">
       <div className="page__container">
@@ -260,48 +260,29 @@ const App = () => {
             <Route
               path="/"
               element={
-                <>
-                  <Header linkText="Выйти" handleLogout={handleLogout} />
-                  {isLoading ? (
-                    <Spinner />
-                  ) : (
-                    <Main
-                      onEditProfile={handleEditProfileClick}
-                      onAddPlace={handleAddCardClick}
-                      onEditAvatar={handleEditAvatarClick}
-                      onCardClick={handleCardClick}
-                      cards={cards}
-                      onCardLike={handleCardLike}
-                      onCardDelete={handleSubmitDeleteClick}
-                    />
-                  )}
-                  <Footer />
-                </>
+                isLoading ? (
+                  <Spinner />
+                ) : (
+                  <Main
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddCardClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onCardClick={handleCardClick}
+                    cards={cards}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleSubmitDeleteClick}
+                    handleLogout={handleLogout}
+                  />
+                )
               }
             />
             <Route
               path="/sign-in"
-              element={
-                <>
-                  <Header linkText="Регистрация" />
-                  <Login
-                    handleLogin={handleLogin}
-                    validateForm={handleFormValidation}
-                  />
-                </>
-              }
+              element={<Login handleLogin={handleLogin} />}
             />
             <Route
               path="/sign-up"
-              element={
-                <>
-                  <Header linkText="Вход" />
-                  <Register
-                    handleRegister={handleRegister}
-                    validateForm={handleFormValidation}
-                  />
-                </>
-              }
+              element={<Register handleRegister={handleRegister} />}
             />
 
             {/* <Route>

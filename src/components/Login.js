@@ -1,10 +1,11 @@
 import { useState } from "react";
+import Header from "./Header";
 
-function Login({ handleLogin, validateForm }) {
+function Login({ handleLogin }) {
+  const [loginData, setLoginData] = useState({});
+
   const [isValid, setIsValid] = useState(true);
   const [validationMessage, setValidationMessage] = useState({});
-
-  const [loginData, setLoginData] = useState({});
 
   const handleChange = (evt) => {
     const input = evt.target;
@@ -32,71 +33,74 @@ function Login({ handleLogin, validateForm }) {
     } else {
       setIsValid(false);
       setValidationMessage({
-        email: "Please insert correct email",
-        password: "Please insert correct password",
+        email: "Please fill out this field.",
+        password: "Please insert correct password.",
       });
     }
   }
 
   return (
-    <form className="entry" name="login" onSubmit={handleSubmit} noValidate>
-      <fieldset className="entry__wrapper">
-        <legend className="entry__title">Вход</legend>
+    <>
+      <Header navlink="/sign-up" linkText="Регистрация" />
+      <form className="sign" name="login" onSubmit={handleSubmit} noValidate>
+        <fieldset className="sign__wrapper">
+          <legend className="sign__title">Вход</legend>
 
-        <input
-          className={`entry__input ${
-            validationMessage.email && "entry__input_type_error"
-          }`}
-          name="email"
-          id="email"
-          type="email"
-          placeholder="Email"
-          minLength="2"
-          maxLength="40"
-          value={loginData["email"] || ""}
-          onChange={handleChange}
-          required
-        />
-        <span
-          id="email-error"
-          className={`entry__input-error ${
-            !isValid && "entry__input-error_visible"
-          }`}
-        >
-          {validationMessage.email}
-        </span>
-        <input
-          className={`entry__input ${
-            validationMessage.password && "entry__input_type_error"
-          }`}
-          name="password"
-          id="password"
-          type="password"
-          placeholder="Пароль"
-          minLength="2"
-          maxLength="200"
-          value={loginData["password"] || ""}
-          onChange={handleChange}
-          required
-        />
-        <span
-          id="password-error"
-          className={`entry__input-error ${
-            !isValid && "entry__input-error_visible"
-          }`}
-        >
-          {validationMessage.password}
-        </span>
-        <button
-          className={`button button_form_submit-entry ${
-            !isValid && "button_disabled"
-          }`}
-          type="submit"
-        >
-          Войти
-        </button>
-      </fieldset>
-    </form>
+          <input
+            className={`sign__input ${
+              validationMessage.email && "sign__input_type_error"
+            }`}
+            name="email"
+            id="email"
+            type="email"
+            placeholder="Email"
+            minLength="2"
+            maxLength="320"
+            value={loginData["email"] || ""}
+            onChange={handleChange}
+            required
+          />
+          <span
+            id="email-error"
+            className={`sign__input-error ${
+              !isValid && "sign__input-error_visible"
+            }`}
+          >
+            {validationMessage.email}
+          </span>
+          <input
+            className={`sign__input ${
+              validationMessage.password && "sign__input_type_error"
+            }`}
+            name="password"
+            id="password"
+            type="password"
+            placeholder="Пароль"
+            minLength="2"
+            maxLength="15"
+            value={loginData["password"] || ""}
+            onChange={handleChange}
+            required
+          />
+          <span
+            id="password-error"
+            className={`sign__input-error ${
+              !isValid && "sign__input-error_visible"
+            }`}
+          >
+            {validationMessage.password}
+          </span>
+          <button
+            className={`button button_form_submit-sign ${
+              !isValid && "button_disabled"
+            }`}
+            type="submit"
+          >
+            Войти
+          </button>
+        </fieldset>
+      </form>
+    </>
   );
 }
 
