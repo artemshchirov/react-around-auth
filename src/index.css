@@ -75,6 +75,7 @@
 @import url(./blocks/sign/__form/sign__form.css);
 @import url(./blocks/sign/__title/sign__title.css);
 @import url(./blocks/sign/__input/sign__input.css);
+@import url(./blocks/sign/__input-error/sign__input-error.css);
 @import url(./blocks/sign/__input/_type/sign__input_type_error.css);
 @import url(./blocks/sign/__login/sign__login.css);
 /* spinner */

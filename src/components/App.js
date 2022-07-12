@@ -1,38 +1,36 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import Main from "./Main";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import AddPlacePopup from "./AddPlacePopup";
-import ImagePopup from "./ImagePopup";
-import Spinner from "./Spinner";
-import api from "../utils/api";
-import SubmitPopup from "./SubmitPopup";
-import Login from "./Login";
-import Register from "./Register";
 import { register, authorize, getContent } from "../utils/auth";
-import Header from "./Header";
+import AddPlacePopup from "./AddPlacePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
+import EditProfilePopup from "./EditProfilePopup";
 import Footer from "./Footer";
+import Header from "./Header";
+import ImagePopup from "./ImagePopup";
 import InfoToolTip from "./InfoToolTip";
-
+import Login from "./Login";
+import Main from "./Main";
 import ProtectedRoute from "./ProtectedRoute";
+import Register from "./Register";
+import Spinner from "./Spinner";
+import SubmitPopup from "./SubmitPopup";
+import api from "../utils/api";
 
 const App = () => {
-  const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
+  const [imagePopupCard, setImagePopupCard] = useState(null);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitPopupOpen, setIsSubmitPopupOpen] = useState(false);
-  const [currentCard, setCurrentCard] = useState({});
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [deleteCard, setDeleteCard] = useState({});
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
   const [statusInfoToolTip, setStatusInfoToolTip] = useState(null);
 
@@ -111,6 +109,8 @@ const App = () => {
         }
       })
       .catch((err) => {
+        setStatusInfoToolTip(false);
+        setIsInfoToolTipOpen(true);
         console.error(`Ошибка авторизации пользователя: ${err}`);
       });
   };
@@ -134,31 +134,21 @@ const App = () => {
   }
 
   function handleSubmitDeleteClick(card) {
-    setIsSubmitPopupOpen(true);
-    setCurrentCard(card);
+    setIsDeletePopupOpen(true);
+    setDeleteCard(card);
   }
 
   function handleCardClick(card) {
-    setSelectedCard(card);
+    setImagePopupCard(card);
   }
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfileOpen(false);
     setIsAddPlacePopupOpen(false);
-    setIsSubmitPopupOpen(false);
+    setIsDeletePopupOpen(false);
     setIsInfoToolTipOpen(false);
-    setSelectedCard(null);
-  }
-
-  function handleFormValidation(input, setInputValid, setInputErrorMessage) {
-    if (input.validity.valid) {
-      setInputValid(true);
-      setInputErrorMessage("");
-    } else {
-      setInputValid(false);
-      setInputErrorMessage(input.validationMessage);
-    }
+    setImagePopupCard(null);
   }
 
   function handleUpdateUser({ name, about }) {
@@ -300,13 +290,11 @@ const App = () => {
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
-            validateForm={handleFormValidation}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
-            validateForm={handleFormValidation}
           />
           <InfoToolTip
             isOpen={isInfoToolTipOpen}
@@ -317,15 +305,14 @@ const App = () => {
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
-            validateForm={handleFormValidation}
           />
           <SubmitPopup
-            isOpen={isSubmitPopupOpen}
+            isOpen={isDeletePopupOpen}
             onClose={closeAllPopups}
             onSubmitDelete={handleCardDelete}
-            card={currentCard}
+            card={deleteCard}
           />
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <ImagePopup card={imagePopupCard} onClose={closeAllPopups} />
         </CurrentUserContext.Provider>
       </div>
     </div>

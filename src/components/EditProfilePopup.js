@@ -1,50 +1,43 @@
 import { useEffect, useState, useContext } from "react";
-import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import PopupWithForm from "./PopupWithForm";
 
-export default function EditProfilePopup({
-  isOpen,
-  onClose,
-  onUpdateUser,
-  validateForm,
-}) {
+export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   const currentUser = useContext(CurrentUserContext);
+  const [profileData, setProfileData] = useState({});
+  const [isValid, setIsValid] = useState(true);
+  const [validationMessage, setValidationMessage] = useState({});
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  useEffect(() => {
+    setProfileData({
+      name: currentUser.name,
+      about: currentUser.about,
+    });
+    setIsValid(true);
+    setValidationMessage({});
+  }, [currentUser, isOpen]);
 
-  const [isNameValid, setIsNameValid] = useState(true);
-  const [isDescriptionValid, setIsDescriptionValid] = useState(true);
-
-  const [nameErrorMessage, setNameErrorMessage] = useState("");
-  const [descriptionErrorMessage, setDescriptionErrorMessage] = useState("");
-
-  function handleChangeName(evt) {
-    setName(evt.target.value);
-    validateForm(evt.target, setIsNameValid, setNameErrorMessage);
-  }
-
-  function handleChangeDescription(evt) {
-    setDescription(evt.target.value);
-    validateForm(evt.target, setIsDescriptionValid, setDescriptionErrorMessage);
-  }
+  const handleChange = (evt) => {
+    const input = evt.target;
+    const { name, value } = input;
+    setProfileData((oldData) => ({
+      ...oldData,
+      [name]: value,
+    }));
+    setIsValid(input.closest("form").checkValidity());
+    setValidationMessage({
+      ...validationMessage,
+      [name]: input.validationMessage,
+    });
+  };
 
   function handleSubmit(evt) {
     evt.preventDefault();
     onUpdateUser({
-      name,
-      about: description,
+      name: profileData.name,
+      about: profileData.about,
     });
   }
-
-  useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
-    setIsNameValid(true);
-    setIsDescriptionValid(true);
-    setNameErrorMessage("");
-    setDescriptionErrorMessage("");
-  }, [currentUser, isOpen]);
 
   return (
     <PopupWithForm
@@ -54,49 +47,52 @@ export default function EditProfilePopup({
       onClose={onClose}
       onSubmit={handleSubmit}
       buttonText="Сохранить"
-      buttonActive={isNameValid && isDescriptionValid}
+      buttonActive={isValid}
     >
       <input
-        className={`form__input ${!isNameValid && "form__input_type_error"}`}
-        name="name-edit_input"
-        id="name-edit"
+        className={`form__input ${
+          validationMessage.name && "form__input_type_error"
+        }`}
+        name="name"
+        id="name"
         type="text"
         placeholder="Имя"
         minLength="2"
         maxLength="40"
-        value={name || ""}
-        onChange={handleChangeName}
+        value={profileData.name || ""}
+        onChange={handleChange}
         required
       />
       <span
-        id="name-edit-error"
+        id="name-error"
         className={`form__input-error ${
-          !isNameValid && "form__input-error_visible"
+          !isValid && "form__input-error_visible"
         }`}
       >
-        {!isNameValid && nameErrorMessage}
+        {validationMessage.name}
       </span>
+
       <input
         className={`form__input ${
-          !isDescriptionValid && "form__input_type_error"
+          validationMessage.about && "form__input_type_error"
         }`}
-        name="about-edit_input"
-        id="about-edit"
+        name="about"
+        id="about"
         type="text"
         placeholder="Профессия"
         minLength="2"
         maxLength="200"
-        value={description || ""}
-        onChange={handleChangeDescription}
+        value={profileData.about || ""}
+        onChange={handleChange}
         required
       />
       <span
-        id="about-edit-error"
+        id="about-error"
         className={`form__input-error ${
-          !isDescriptionValid && "form__input-error_visible"
+          !isValid && "form__input-error_visible"
         }`}
       >
-        {!isDescriptionValid && descriptionErrorMessage}
+        {validationMessage.about}
       </span>
     </PopupWithForm>
   );

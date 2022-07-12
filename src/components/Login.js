@@ -26,7 +26,6 @@ function Login({ handleLogin }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-
     if (evt.target.closest("form").checkValidity()) {
       const { email, password } = loginData;
       if (!email || !password) return;
@@ -63,7 +62,7 @@ function Login({ handleLogin }) {
               placeholder="Email"
               minLength="2"
               maxLength="320"
-              value={loginData["email"] || ""}
+              value={loginData.email || ""}
               onChange={handleChange}
               required
             />
@@ -85,7 +84,7 @@ function Login({ handleLogin }) {
               placeholder="Пароль"
               minLength="2"
               maxLength="15"
-              value={loginData["password"] || ""}
+              value={loginData.password || ""}
               onChange={handleChange}
               required
             />
