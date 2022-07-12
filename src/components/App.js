@@ -16,6 +16,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import InfoToolTip from "./InfoToolTip";
 
+import ProtectedRoute from "./ProtectedRoute";
+
 const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -255,27 +257,24 @@ const App = () => {
     <div className="page">
       <div className="page__container">
         <CurrentUserContext.Provider value={currentUser}>
-          <InfoToolTip
-            isOpen={isInfoToolTipOpen}
-            onClose={closeAllPopups}
-            success={statusInfoToolTip}
-          />
           <Routes>
             <Route
               path="/sign-in"
               element={<Login handleLogin={handleLogin} />}
             />
+
             <Route
               path="/sign-up"
               element={<Register handleRegister={handleRegister} />}
             />
+
             <Route
               path="/"
               element={
                 isLoading ? (
                   <Spinner />
                 ) : (
-                  <>
+                  <ProtectedRoute path="/" loggedIn={loggedIn}>
                     <Header
                       loggedIn={loggedIn}
                       email={userEmail}
@@ -291,13 +290,10 @@ const App = () => {
                       cards={cards}
                     />
                     <Footer />
-                  </>
+                  </ProtectedRoute>
                 )
               }
             />
-            {/* <Route>
-              {loggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />}
-            </Route> */}
           </Routes>
 
           <EditProfilePopup
@@ -306,14 +302,17 @@ const App = () => {
             onUpdateUser={handleUpdateUser}
             validateForm={handleFormValidation}
           />
-
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
             validateForm={handleFormValidation}
           />
-
+          <InfoToolTip
+            isOpen={isInfoToolTipOpen}
+            onClose={closeAllPopups}
+            currentStatus={statusInfoToolTip}
+          />
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}

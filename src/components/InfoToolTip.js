@@ -1,7 +1,7 @@
 import successIcon from "../images/info-success.svg";
 import failIcon from "../images/info-fail.svg";
 
-function InfoToolTip({ isOpen, onClose, success }) {
+function InfoToolTip({ isOpen, onClose, currentStatus }) {
   return (
     <div className={`popup ${isOpen && "popup_opened"}`}>
       <div className="popup__overlay" onClick={onClose}></div>
@@ -12,12 +12,12 @@ function InfoToolTip({ isOpen, onClose, success }) {
           onClick={onClose}
         ></button>
         <img
-          src={success ? successIcon : failIcon}
+          src={currentStatus ? successIcon : failIcon}
           alt="Результат попытки регистрации"
           className="popup__icon"
         />
         <p className="popup__status">
-          {success
+          {currentStatus
             ? "Вы успешно зарегистрировались!"
             : "Что-то пошло не так! Попробуйте ещё раз."}
         </p>
