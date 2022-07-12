@@ -60,6 +60,8 @@
 @import url(./blocks/popup/_card-fullscreen/popup_card-fullscreen.css);
 @import url(./blocks/popup/__figure/popup__figure.css);
 @import url(./blocks/popup/__overlay/popup__overlay.css);
+@import url(./blocks/popup/__icon/popup__icon.css);
+@import url(./blocks/popup/__status/popup__status.css);
 /* form */
 @import url(./blocks/form/form.css);
 @import url(./blocks/form/__container/form__container.css);

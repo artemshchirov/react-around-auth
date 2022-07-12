@@ -31,14 +31,14 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
 
-  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(true);
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
   const [statusInfoToolTip, setStatusInfoToolTip] = useState(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     tokenCheck();
-  }, []);
+  }, []); // ???...
 
   useEffect(() => {
     setIsLoading(true);
@@ -104,6 +104,7 @@ const App = () => {
         if (res.token) {
           localStorage.setItem("jwt", res.token);
           setLoggedIn(true);
+          setUserEmail(email);
           navigate("/");
         }
       })
