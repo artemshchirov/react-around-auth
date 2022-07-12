@@ -31,6 +31,7 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       buttonText="Создать"
+      buttonActive={true} //TODO: добавить валидацию
     >
       <input
         className="form__input"

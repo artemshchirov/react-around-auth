@@ -13,6 +13,8 @@ import Login from "./Login";
 import Register from "./Register";
 import { register, authorize, getContent } from "../utils/auth";
 import Header from "./Header";
+import Footer from "./Footer";
+import InfoToolTip from "./InfoToolTip";
 
 const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
@@ -28,6 +30,9 @@ const App = () => {
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+
+  const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(true);
+  const [statusInfoToolTip, setStatusInfoToolTip] = useState(null);
 
   const navigate = useNavigate();
 
@@ -72,7 +77,7 @@ const App = () => {
           navigate("/");
         })
         .catch((err) =>
-          console.error(`Ошибка получения контента пользователя, код: ${err}`)
+          console.error(`Ошибка получения контента пользователя: ${err}`)
         );
     }
   };
@@ -80,12 +85,17 @@ const App = () => {
   const handleRegister = (email, password) => {
     register(password, email)
       .then(() => {
+        setStatusInfoToolTip(true);
         setLoggedIn(true);
         navigate("/sign-in");
       })
-      .catch((err) =>
-        console.error(`Ошибка регистрации пользователя, код: ${err}`)
-      );
+      .catch((err) => {
+        setStatusInfoToolTip(false);
+        console.error(`Ошибка регистрации пользователя: ${err}`);
+      })
+      .finally(() => {
+        setIsInfoToolTipOpen(true);
+      });
   };
 
   const handleLogin = (email, password) => {
@@ -97,9 +107,9 @@ const App = () => {
           navigate("/");
         }
       })
-      .catch((err) =>
-        console.error(`Ошибка авторизации пользователя, код: ${err}`)
-      );
+      .catch((err) => {
+        console.error(`Ошибка авторизации пользователя: ${err}`);
+      });
   };
 
   const handleLogout = () => {
@@ -134,6 +144,7 @@ const App = () => {
     setIsEditProfileOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsSubmitPopupOpen(false);
+    setIsInfoToolTipOpen(false);
     setSelectedCard(null);
   }
 
@@ -243,6 +254,11 @@ const App = () => {
     <div className="page">
       <div className="page__container">
         <CurrentUserContext.Provider value={currentUser}>
+          <InfoToolTip
+            isOpen={isInfoToolTipOpen}
+            onClose={closeAllPopups}
+            success={statusInfoToolTip}
+          />
           <Routes>
             <Route
               path="/sign-in"
@@ -258,18 +274,23 @@ const App = () => {
                 isLoading ? (
                   <Spinner />
                 ) : (
-                  <Main
-                    onEditProfile={handleEditProfileClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onAddPlace={handleAddCardClick}
-                    onCardDelete={handleSubmitDeleteClick}
-                    onCardClick={handleCardClick}
-                    onCardLike={handleCardLike}
-                    cards={cards}
-                    loggedIn={loggedIn}
-                    email={userEmail}
-                    handleLogout={handleLogout}
-                  />
+                  <>
+                    <Header
+                      loggedIn={loggedIn}
+                      email={userEmail}
+                      handleLogout={handleLogout}
+                    />
+                    <Main
+                      onEditProfile={handleEditProfileClick}
+                      onEditAvatar={handleEditAvatarClick}
+                      onAddPlace={handleAddCardClick}
+                      onCardDelete={handleSubmitDeleteClick}
+                      onCardClick={handleCardClick}
+                      onCardLike={handleCardLike}
+                      cards={cards}
+                    />
+                    <Footer />
+                  </>
                 )
               }
             />

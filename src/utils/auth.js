@@ -1,6 +1,12 @@
 export const baseUrl = "https://auth.nomoreparties.co";
 const authorization = "e3cd37b0-56ab-40c1-b26c-66c00d48e156";
 
+const handleResponse = (response) => {
+  return response.ok
+    ? response.json()
+    : Promise.reject(`код ${response.status}`);
+};
+
 export const register = (password, email) => {
   return fetch(`${baseUrl}/signup`, {
     method: "POST",
@@ -12,7 +18,7 @@ export const register = (password, email) => {
       password,
       email,
     }),
-  }).then((response) => response.json());
+  }).then(handleResponse);
 };
 
 export const authorize = (email, password) => {
@@ -26,7 +32,7 @@ export const authorize = (email, password) => {
       email,
       password,
     }),
-  }).then((response) => response.json());
+  }).then(handleResponse);
 };
 
 export const getContent = (jwt) => {
@@ -36,5 +42,5 @@ export const getContent = (jwt) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${jwt}`,
     },
-  }).then((response) => response.json());
+  }).then(handleResponse);
 };

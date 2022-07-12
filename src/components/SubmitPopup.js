@@ -14,6 +14,7 @@ export default function SubmitPopup({ isOpen, onClose, onSubmitDelete, card }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       buttonText="Да"
+      buttonActive={true}
     ></PopupWithForm>
   );
 }

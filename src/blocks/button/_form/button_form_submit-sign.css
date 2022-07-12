@@ -6,4 +6,9 @@
   line-height: 1.21;
   color: #000;
   background-color: #fff;
+  border-radius: 2px;
+}
+
+.button_form_submit-sign:hover {
+  opacity: .85;
 }

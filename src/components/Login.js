@@ -48,64 +48,66 @@ function Login({ handleLogin }) {
           Регистрация
         </Link>
       </header>
-      <form className="sign" name="login" onSubmit={handleSubmit} noValidate>
-        <fieldset className="sign__wrapper">
-          <legend className="sign__title">Вход</legend>
+      <section className="sign">
+        <form name="login" onSubmit={handleSubmit} noValidate>
+          <fieldset className="sign__form">
+            <legend className="sign__title">Вход</legend>
 
-          <input
-            className={`sign__input ${
-              validationMessage.email && "sign__input_type_error"
-            }`}
-            name="email"
-            id="email"
-            type="email"
-            placeholder="Email"
-            minLength="2"
-            maxLength="320"
-            value={loginData["email"] || ""}
-            onChange={handleChange}
-            required
-          />
-          <span
-            id="email-error"
-            className={`sign__input-error ${
-              !isValid && "sign__input-error_visible"
-            }`}
-          >
-            {validationMessage.email}
-          </span>
-          <input
-            className={`sign__input ${
-              validationMessage.password && "sign__input_type_error"
-            }`}
-            name="password"
-            id="password"
-            type="password"
-            placeholder="Пароль"
-            minLength="2"
-            maxLength="15"
-            value={loginData["password"] || ""}
-            onChange={handleChange}
-            required
-          />
-          <span
-            id="password-error"
-            className={`sign__input-error ${
-              !isValid && "sign__input-error_visible"
-            }`}
-          >
-            {validationMessage.password}
-          </span>
-          <button
-            className={`button button_form_submit-sign ${
-              !isValid && "button_disabled"
-            }`}
-            type="submit"
-          >
-            Войти
-          </button>
-        </fieldset>
-      </form>
+            <input
+              className={`sign__input ${
+                validationMessage.email && "sign__input_type_error"
+              }`}
+              name="email"
+              id="email"
+              type="email"
+              placeholder="Email"
+              minLength="2"
+              maxLength="320"
+              value={loginData["email"] || ""}
+              onChange={handleChange}
+              required
+            />
+            <span
+              id="email-error"
+              className={`sign__input-error ${
+                !isValid && "sign__input-error_visible"
+              }`}
+            >
+              {validationMessage.email}
+            </span>
+            <input
+              className={`sign__input ${
+                validationMessage.password && "sign__input_type_error"
+              }`}
+              name="password"
+              id="password"
+              type="password"
+              placeholder="Пароль"
+              minLength="2"
+              maxLength="15"
+              value={loginData["password"] || ""}
+              onChange={handleChange}
+              required
+            />
+            <span
+              id="password-error"
+              className={`sign__input-error ${
+                !isValid && "sign__input-error_visible"
+              }`}
+            >
+              {validationMessage.password}
+            </span>
+            <button
+              className={`button button_form_submit-sign ${
+                !isValid && "button_disabled"
+              }`}
+              type="submit"
+            >
+              Войти
+            </button>
+          </fieldset>
+        </form>
+      </section>
     </>
   );
 }

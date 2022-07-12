@@ -5,11 +5,12 @@
   border: none;
   font-size: 18px;
   line-height: 1.22;
-  align-self: center;
   text-decoration: none;
   color: #fff;
+  cursor: pointer;
+  transition: opacity 0.1s;
 }
 
 .header__link:hover {
-  cursor: pointer;
+  opacity: 0.6;
 }

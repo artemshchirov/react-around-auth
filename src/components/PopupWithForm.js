@@ -1,7 +1,7 @@
 export default function PopupWithForm(props) {
   return (
     <div
-      className={`popup popup_${props.name} ${props.isOpen && "popup_opened"}`}
+      className={`popup ${props.isOpen && "popup_opened"}`}
     >
       <div className="popup__overlay" onClick={props.onClose}></div>
       <div className="popup__container">
@@ -12,7 +12,6 @@ export default function PopupWithForm(props) {
         ></button>
         <form
           className="form"
-          name={props.name}
           onSubmit={props.onSubmit}
           noValidate
         >

@@ -1,0 +1,5 @@
+.header__sign {
+  display: flex;
+  justify-content: end;
+  align-items: start;
+}

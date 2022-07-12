@@ -9,7 +9,7 @@ export default function Header({ loggedIn, email, handleLogout }) {
       </a>
       <div className="header__sign">
         {loggedIn && <p className="header__email">{email}</p>}
-        <button onClick={handleLogout} className="header__link">
+        <button onClick={handleLogout} className="header__link header__link_type_gray">
           {loggedIn ? "Выйти" : "Войти"}
         </button>
       </div>

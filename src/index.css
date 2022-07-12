@@ -15,7 +15,10 @@
 @import url(./blocks/logo/logo.css);
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__wrapper/header__wrapper.css);
+@import url(./blocks/header/__sign/header__sign.css);
+@import url(./blocks/header/__email/header__email.css);
 @import url(./blocks/header/__link/header__link.css);
+@import url(./blocks/header/__link/_type/header__link_type_gray.css);
 /* button */
 @import url(./blocks/button/button.css);
 @import url(./blocks/button/_profile/button_profile_edit.css);
@@ -67,9 +70,10 @@
 @import url(./blocks/form/__input-error/_visible/form__input-error_visible.css);
 /* sign */
 @import url(./blocks/sign/sign.css);
-@import url(./blocks/sign/__wrapper/sign__wrapper.css);
+@import url(./blocks/sign/__form/sign__form.css);
 @import url(./blocks/sign/__title/sign__title.css);
 @import url(./blocks/sign/__input/sign__input.css);
 @import url(./blocks/sign/__input/_type/sign__input_type_error.css);
+@import url(./blocks/sign/__login/sign__login.css);
 /* spinner */
 @import url(./blocks/spinner/spinner.css);
