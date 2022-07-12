@@ -12,13 +12,15 @@ export default function Main({
   cards,
   onCardLike,
   onCardDelete,
+  loggedIn,
+  email,
   handleLogout,
 }) {
   const currentUser = useContext(CurrentUserContext);
 
   return (
     <>
-      <Header navlink="/sign-in" linkText="Выйти" handleLogout={handleLogout} />
+      <Header loggedIn={loggedIn} email={email} handleLogout={handleLogout} />
       <main className="content page__content">
         <section className="profile section content__section">
           <div className="profile__avatar-container" onClick={onEditAvatar}>

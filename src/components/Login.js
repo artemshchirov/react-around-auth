@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Header from "./Header";
+import { Link } from "react-router-dom";
+import logo from "../images/logo-mesto.svg";
 
 function Login({ handleLogin }) {
   const [loginData, setLoginData] = useState({});
@@ -41,7 +42,12 @@ function Login({ handleLogin }) {
 
   return (
     <>
-      <Header navlink="/sign-up" linkText="Регистрация" />
+      <header className="header page__header">
+        <img src={logo} alt="Логотип 'Место'" className="logo" />
+        <Link to="/sign-up" className="header__link">
+          Регистрация
+        </Link>
+      </header>
       <form className="sign" name="login" onSubmit={handleSubmit} noValidate>
         <fieldset className="sign__wrapper">
           <legend className="sign__title">Вход</legend>

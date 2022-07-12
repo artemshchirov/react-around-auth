@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Header from "./Header";
+import { Link } from "react-router-dom";
+import logo from "../images/logo-mesto.svg";
 
 function Register({ handleRegister }) {
   const [registerData, setRegisterData] = useState({});
@@ -40,7 +41,12 @@ function Register({ handleRegister }) {
 
   return (
     <>
-      <Header navlink="/sign-in" linkText="Вход" />
+      <header className="header page__header">
+        <img src={logo} alt="Логотип 'Место'" className="logo" />
+        <Link to="/sign-in" className="header__link">
+          Вход
+        </Link>
+      </header>
       <form className="sign" name="login" onSubmit={handleSubmit} noValidate>
         <fieldset className="sign__wrapper">
           <legend className="sign__title">Регистрация</legend>

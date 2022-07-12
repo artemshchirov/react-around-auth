@@ -1,8 +1,15 @@
 .header__link {
-  padding-top: 6px;
+  background-color: #000;
+  margin: 0;
+  padding: 6px 0 0;
+  border: none;
   font-size: 18px;
   line-height: 1.22;
   align-self: center;
   text-decoration: none;
   color: #fff;
+}
+
+.header__link:hover {
+  cursor: pointer;
 }

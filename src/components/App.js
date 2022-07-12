@@ -12,6 +12,7 @@ import SubmitPopup from "./SubmitPopup";
 import Login from "./Login";
 import Register from "./Register";
 import { register, authorize, getContent } from "../utils/auth";
+import Header from "./Header";
 
 const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfileOpen] = useState(false);
@@ -26,6 +27,7 @@ const App = () => {
   const [currentCard, setCurrentCard] = useState({});
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
   const navigate = useNavigate();
 
@@ -62,14 +64,12 @@ const App = () => {
 
   const tokenCheck = () => {
     let jwt = localStorage.getItem("jwt");
-    console.log("tokenCheck jwt:", jwt);
     if (jwt) {
       getContent(jwt)
         .then((res) => {
-          console.log("tokenCheck getContent res:", res);
-          console.log("tokenCheck email:", res.email);
+          setUserEmail(res.data.email);
           setLoggedIn(true);
-          navigate("/")
+          navigate("/");
         })
         .catch((err) =>
           console.error(`Ошибка получения контента пользователя, код: ${err}`)
@@ -78,7 +78,6 @@ const App = () => {
   };
 
   const handleRegister = (email, password) => {
-    console.log("handleRegister email, password:", email, password);
     register(password, email)
       .then(() => {
         setLoggedIn(true);
@@ -246,25 +245,6 @@ const App = () => {
         <CurrentUserContext.Provider value={currentUser}>
           <Routes>
             <Route
-              path="/"
-              element={
-                isLoading ? (
-                  <Spinner />
-                ) : (
-                  <Main
-                    onEditProfile={handleEditProfileClick}
-                    onAddPlace={handleAddCardClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onCardClick={handleCardClick}
-                    cards={cards}
-                    onCardLike={handleCardLike}
-                    onCardDelete={handleSubmitDeleteClick}
-                    handleLogout={handleLogout}
-                  />
-                )
-              }
-            />
-            <Route
               path="/sign-in"
               element={<Login handleLogin={handleLogin} />}
             />
@@ -272,7 +252,27 @@ const App = () => {
               path="/sign-up"
               element={<Register handleRegister={handleRegister} />}
             />
-
+            <Route
+              path="/"
+              element={
+                isLoading ? (
+                  <Spinner />
+                ) : (
+                  <Main
+                    onEditProfile={handleEditProfileClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onAddPlace={handleAddCardClick}
+                    onCardDelete={handleSubmitDeleteClick}
+                    onCardClick={handleCardClick}
+                    onCardLike={handleCardLike}
+                    cards={cards}
+                    loggedIn={loggedIn}
+                    email={userEmail}
+                    handleLogout={handleLogout}
+                  />
+                )
+              }
+            />
             {/* <Route>
               {loggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />}
             </Route> */}
