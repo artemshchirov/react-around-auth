@@ -12,10 +12,10 @@ class Api {
 
   setAvatar({ avatar }) {
     return fetch(`${this._address}/users/me/avatar`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
         authorization: this._token,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         avatar,
@@ -33,10 +33,10 @@ class Api {
 
   setUserInfo({ name, about }) {
     return fetch(`${this._address}/users/me`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
         authorization: this._token,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name,
@@ -55,10 +55,10 @@ class Api {
 
   addItem({ name, link }) {
     return fetch(`${this._address}/cards`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         authorization: this._token,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name,
@@ -69,7 +69,7 @@ class Api {
 
   deleteItem(id) {
     return fetch(`${this._address}/cards/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         authorization: this._token,
       },
@@ -78,7 +78,7 @@ class Api {
 
   changeLikeCardStatus(cardId, isLikeActive) {
     return fetch(`${this._address}/cards/${cardId}/likes`, {
-      method: `${isLikeActive ? "PUT" : "DELETE"}`,
+      method: `${isLikeActive ? 'PUT' : 'DELETE'}`,
       headers: {
         authorization: this._token,
       },
@@ -87,10 +87,10 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-35",
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-35',
   headers: {
-    authorization: "e3cd37b0-56ab-40c1-b26c-66c00d48e156",
-    "Content-Type": "application/json",
+    authorization: 'e3cd37b0-56ab-40c1-b26c-66c00d48e156',
+    'Content-Type': 'application/json',
   },
 });
 

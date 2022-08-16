@@ -298,11 +298,7 @@ const App = () => {
             onUpdateAvatar={handleUpdateAvatar}
             isSending={isLoading}
           />
-          <InfoToolTip
-            isOpen={isInfoToolTipOpen}
-            onClose={closeAllPopups}
-            currentStatus={statusInfoToolTip}
-          />
+
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
@@ -315,6 +311,11 @@ const App = () => {
             onSubmitDelete={handleCardDelete}
             card={deleteCard}
             isSending={isLoading}
+          />
+          <InfoToolTip
+            isOpen={isInfoToolTipOpen}
+            onClose={closeAllPopups}
+            currentStatus={statusInfoToolTip}
           />
           <ImagePopup card={imagePopupCard} onClose={closeAllPopups} />
         </CurrentUserContext.Provider>
