@@ -18,9 +18,7 @@ export default function ImagePopup({ card, onClose }) {
   }, [isOpen, onClose]);
 
   const handleOverlayClose = (evt) => {
-    if (evt.target === evt.currentTarget && isOpen) {
-      onClose();
-    }
+    if (evt.target === evt.currentTarget && isOpen) onClose();
   };
 
   return (
@@ -28,7 +26,7 @@ export default function ImagePopup({ card, onClose }) {
       className={`popup popup_card-fullscreen" ${card && 'popup_opened'}`}
       onMouseDown={handleOverlayClose}
     >
-      <div className="popup__overlay" onClick={onClose}></div>
+      <div className="popup__overlay" onClick={handleOverlayClose}></div>
       <figure className="popup__figure">
         <button
           className="button button_popup_close"

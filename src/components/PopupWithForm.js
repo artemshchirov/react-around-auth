@@ -1,31 +1,57 @@
-export default function PopupWithForm(props) {
+import { useEffect } from 'react';
+
+export default function PopupWithForm({
+  isOpen,
+  title,
+  onClose,
+  onSubmit,
+  buttonText = 'Сохранить',
+  buttonActive,
+  children,
+}) {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscapeCLose = (evt) => {
+      if (evt.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeCLose);
+    return () => {
+      document.removeEventListener('keydown', handleEscapeCLose);
+    };
+  }, [isOpen, onClose]);
+
+  const handleOverlayClose = (evt) => {
+    if (evt.target === evt.currentTarget && isOpen) onClose();
+  };
+
   return (
     <div
-      className={`popup ${props.isOpen && "popup_opened"}`}
+      className={`popup ${isOpen && 'popup_opened'}`}
+      onMouseDown={handleOverlayClose}
     >
-      <div className="popup__overlay" onClick={props.onClose}></div>
+      <div className="popup__overlay" onClick={handleOverlayClose}></div>
       <div className="popup__container">
         <button
           className="button button_popup_close"
           type="button"
-          onClick={props.onClose}
+          onClick={onClose}
         ></button>
-        <form
-          className="form"
-          onSubmit={props.onSubmit}
-          noValidate
-        >
+        <form className="form" onSubmit={onSubmit} noValidate>
           <fieldset className="form__container">
-            <legend className="form__title">{props.title}</legend>
-            {props.children}
+            <legend className="form__title">{title}</legend>
+            {children}
             <button
               className={`button button_form_submit ${
-                !props.buttonActive && "button_disabled"
+                !buttonActive && 'button_disabled'
               }`}
               type="submit"
-              disabled={!props.buttonActive}
+              disabled={!buttonActive}
             >
-              {props.buttonText}
+              {buttonText}
             </button>
           </fieldset>
         </form>
