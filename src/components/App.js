@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { register, authorize, getContent } from "../utils/auth";
-import AddPlacePopup from "./AddPlacePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import EditProfilePopup from "./EditProfilePopup";
-import Footer from "./Footer";
-import Header from "./Header";
-import ImagePopup from "./ImagePopup";
-import InfoToolTip from "./InfoToolTip";
-import Login from "./Login";
-import Main from "./Main";
-import ProtectedRoute from "./ProtectedRoute";
-import Register from "./Register";
-import Spinner from "./Spinner";
-import SubmitPopup from "./SubmitPopup";
-import api from "../utils/api";
+import { useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { register, authorize, getContent } from '../utils/auth';
+import AddPlacePopup from './AddPlacePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import EditProfilePopup from './EditProfilePopup';
+import Footer from './Footer';
+import Header from './Header';
+import ImagePopup from './ImagePopup';
+import InfoToolTip from './InfoToolTip';
+import Login from './Login';
+import Main from './Main';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Spinner from './Spinner';
+import SubmitPopup from './SubmitPopup';
+import api from '../utils/api';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -30,7 +30,7 @@ const App = () => {
   const [deleteCard, setDeleteCard] = useState({});
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState('');
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
   const [statusInfoToolTip, setStatusInfoToolTip] = useState(null);
 
@@ -38,7 +38,7 @@ const App = () => {
 
   useEffect(() => {
     tokenCheck();
-  }, []); // ???...
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -68,13 +68,13 @@ const App = () => {
   }, []);
 
   const tokenCheck = () => {
-    let jwt = localStorage.getItem("jwt");
+    let jwt = localStorage.getItem('jwt');
     if (jwt) {
       getContent(jwt)
         .then((res) => {
           setUserEmail(res.data.email);
           setLoggedIn(true);
-          navigate("/");
+          navigate('/');
         })
         .catch((err) =>
           console.error(`Ошибка получения контента пользователя: ${err}`)
@@ -87,7 +87,7 @@ const App = () => {
       .then(() => {
         setStatusInfoToolTip(true);
         setLoggedIn(true);
-        navigate("/sign-in");
+        navigate('/sign-in');
       })
       .catch((err) => {
         setStatusInfoToolTip(false);
@@ -102,10 +102,10 @@ const App = () => {
     authorize(email, password)
       .then((res) => {
         if (res.token) {
-          localStorage.setItem("jwt", res.token);
+          localStorage.setItem('jwt', res.token);
           setLoggedIn(true);
           setUserEmail(email);
-          navigate("/");
+          navigate('/');
         }
       })
       .catch((err) => {
@@ -116,9 +116,9 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem('jwt');
     setLoggedIn(false);
-    navigate("/sign-in");
+    navigate('/sign-in');
   };
 
   function handleEditAvatarClick() {
@@ -215,7 +215,7 @@ const App = () => {
     setIsLoading(true);
     api
       .deleteItem(card._id)
-      .then((res) => {
+      .then(() => {
         setCards(cards.filter((c) => c._id !== card._id));
         closeAllPopups();
       })
