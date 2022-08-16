@@ -1,12 +1,18 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../images/logo-mesto.svg";
+import { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../images/logo-mesto.svg';
 
 function Login({ handleLogin }) {
   const [loginData, setLoginData] = useState({});
 
   const [isValid, setIsValid] = useState(true);
   const [validationMessage, setValidationMessage] = useState({});
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleChange = (evt) => {
     const input = evt.target;
@@ -17,7 +23,7 @@ function Login({ handleLogin }) {
       [name]: value,
     }));
 
-    setIsValid(input.closest("form").checkValidity());
+    setIsValid(input.closest('form').checkValidity());
     setValidationMessage({
       ...validationMessage,
       [name]: input.validationMessage,
@@ -26,15 +32,15 @@ function Login({ handleLogin }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (evt.target.closest("form").checkValidity()) {
+    if (evt.target.closest('form').checkValidity()) {
       const { email, password } = loginData;
       if (!email || !password) return;
       handleLogin(email, password);
     } else {
       setIsValid(false);
       setValidationMessage({
-        email: "Please fill out this field.",
-        password: "Please insert correct password.",
+        email: 'Please fill out this field.',
+        password: 'Please insert correct password.',
       });
     }
   }
@@ -54,7 +60,7 @@ function Login({ handleLogin }) {
 
             <input
               className={`sign__input ${
-                validationMessage.email && "sign__input_type_error"
+                validationMessage.email && 'sign__input_type_error'
               }`}
               name="email"
               id="email"
@@ -62,43 +68,44 @@ function Login({ handleLogin }) {
               placeholder="Email"
               minLength="2"
               maxLength="320"
-              value={loginData.email || ""}
+              value={loginData.email || ''}
               onChange={handleChange}
+              ref={inputRef}
               required
             />
             <span
               id="email-error"
               className={`sign__input-error ${
-                !isValid && "sign__input-error_visible"
+                !isValid && 'sign__input-error_visible'
               }`}
             >
               {validationMessage.email}
             </span>
             <input
               className={`sign__input ${
-                validationMessage.password && "sign__input_type_error"
+                validationMessage.password && 'sign__input_type_error'
               }`}
               name="password"
               id="password"
-              type="password"
+              type="current-password"
               placeholder="Пароль"
               minLength="2"
               maxLength="15"
-              value={loginData.password || ""}
+              value={loginData.password || ''}
               onChange={handleChange}
               required
             />
             <span
               id="password-error"
               className={`sign__input-error ${
-                !isValid && "sign__input-error_visible"
+                !isValid && 'sign__input-error_visible'
               }`}
             >
               {validationMessage.password}
             </span>
             <button
               className={`button button_form_submit-sign ${
-                !isValid && "button_disabled"
+                !isValid && 'button_disabled'
               }`}
               type="submit"
             >

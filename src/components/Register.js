@@ -1,12 +1,18 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../images/logo-mesto.svg";
+import { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../images/logo-mesto.svg';
 
 function Register({ handleRegister }) {
   const [registerData, setRegisterData] = useState({});
 
   const [isValid, setIsValid] = useState(true);
   const [validationMessage, setValidationMessage] = useState({});
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleChange = (evt) => {
     const input = evt.target;
@@ -16,7 +22,7 @@ function Register({ handleRegister }) {
       [name]: value,
     }));
 
-    setIsValid(input.closest("form").checkValidity());
+    setIsValid(input.closest('form').checkValidity());
     setValidationMessage({
       ...validationMessage,
       [name]: input.validationMessage,
@@ -25,15 +31,15 @@ function Register({ handleRegister }) {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (evt.target.closest("form").checkValidity()) {
+    if (evt.target.closest('form').checkValidity()) {
       let { email, password } = registerData;
       if (!email || !password) return;
       handleRegister(email, password);
     } else {
       setIsValid(false);
       setValidationMessage({
-        email: "Please fill out this field.",
-        password: "Please fill out this field.",
+        email: 'Please fill out this field.',
+        password: 'Please fill out this field.',
       });
     }
   };
@@ -52,7 +58,7 @@ function Register({ handleRegister }) {
             <legend className="sign__title">Регистрация</legend>
             <input
               className={`sign__input ${
-                validationMessage.email && "sign__input_type_error"
+                validationMessage.email && 'sign__input_type_error'
               }`}
               name="email"
               id="email"
@@ -60,21 +66,22 @@ function Register({ handleRegister }) {
               placeholder="Email"
               minLength="2"
               maxLength="320"
-              value={registerData["email"] || ""}
+              value={registerData['email'] || ''}
               onChange={handleChange}
+              ref={inputRef}
               required
             />
             <span
               id="email-error"
               className={`sign__input-error ${
-                !isValid && "sign__input-error_visible"
+                !isValid && 'sign__input-error_visible'
               }`}
             >
               {validationMessage.email}
             </span>
             <input
               className={`sign__input ${
-                validationMessage.password && "sign__input_type_error"
+                validationMessage.password && 'sign__input_type_error'
               }`}
               name="password"
               id="password"
@@ -82,21 +89,21 @@ function Register({ handleRegister }) {
               placeholder="Пароль"
               minLength="2"
               maxLength="15"
-              value={registerData["password"] || ""}
+              value={registerData['password'] || ''}
               onChange={handleChange}
               required
             />
             <span
               id="password-error"
               className={`sign__input-error ${
-                !isValid && "sign__input-error_visible"
+                !isValid && 'sign__input-error_visible'
               }`}
             >
               {validationMessage.password}
             </span>
             <button
               className={`button button_form_submit-sign ${
-                !isValid && "button_disabled"
+                !isValid && 'button_disabled'
               }`}
               type="submit"
             >

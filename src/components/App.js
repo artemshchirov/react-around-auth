@@ -290,11 +290,13 @@ const App = () => {
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
+            isSending={isLoading}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
+            isSending={isLoading}
           />
           <InfoToolTip
             isOpen={isInfoToolTipOpen}
@@ -305,12 +307,14 @@ const App = () => {
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
+            isSending={isLoading}
           />
           <SubmitPopup
             isOpen={isDeletePopupOpen}
             onClose={closeAllPopups}
             onSubmitDelete={handleCardDelete}
             card={deleteCard}
+            isSending={isLoading}
           />
           <ImagePopup card={imagePopupCard} onClose={closeAllPopups} />
         </CurrentUserContext.Provider>

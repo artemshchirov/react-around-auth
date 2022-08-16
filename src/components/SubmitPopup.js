@@ -1,6 +1,12 @@
-import PopupWithForm from "./PopupWithForm";
+import PopupWithForm from './PopupWithForm';
 
-export default function SubmitPopup({ isOpen, onClose, onSubmitDelete, card }) {
+export default function SubmitPopup({
+  isOpen,
+  onClose,
+  onSubmitDelete,
+  card,
+  isSending,
+}) {
   function handleSubmit(evt) {
     evt.preventDefault();
     onSubmitDelete(card);
@@ -13,7 +19,7 @@ export default function SubmitPopup({ isOpen, onClose, onSubmitDelete, card }) {
       title="Вы уверены?"
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText="Да"
+      buttonText={isSending ? 'Удаление...' : 'Да'}
       buttonActive={true}
     ></PopupWithForm>
   );

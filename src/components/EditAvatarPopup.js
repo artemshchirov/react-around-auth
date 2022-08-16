@@ -1,28 +1,34 @@
-import { useRef, useState, useEffect } from "react";
-import PopupWithForm from "./PopupWithForm";
+import { useRef, useState, useEffect } from 'react';
+import PopupWithForm from './PopupWithForm';
 
-export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const avatarRef = useRef();
-
+export default function EditAvatarPopup({
+  isOpen,
+  onClose,
+  onUpdateAvatar,
+  isSending,
+}) {
+  const inputRef = useRef();
   const [isValid, setIsValid] = useState(false);
   const [validationMessage, setValidationMessage] = useState({});
 
   useEffect(() => {
-    avatarRef.current.value = "";
+    if (isOpen) inputRef.current.focus();
+
+    inputRef.current.value = '';
     setIsValid(false);
     setValidationMessage({});
   }, [isOpen]);
 
   function handleChange() {
-    const input = avatarRef.current;
-    setIsValid(input.closest("form").checkValidity());
+    const input = inputRef.current;
+    setIsValid(input.closest('form').checkValidity());
     setValidationMessage({
       [input.name]: input.validationMessage,
     });
   }
 
   function handleSubmit(evt) {
-    const input = avatarRef.current;
+    const input = inputRef.current;
     evt.preventDefault();
     onUpdateAvatar({
       avatar: input.value,
@@ -36,25 +42,25 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       title="Обновить аватар"
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText="Сохранить"
+      buttonText={isSending ? 'Сохранение...' : 'Сохранить'}
       buttonActive={isValid}
     >
       <input
         className={`form__input ${
-          validationMessage.avatar && "form__input_type_error"
+          validationMessage.avatar && 'form__input_type_error'
         }`}
         name="avatar"
         id="avatar"
-        placeholder="Ссылка на картинку"
+        placeholder="Ссылка на изображение"
         type="url"
-        ref={avatarRef}
+        ref={inputRef}
         onChange={handleChange}
         required
       />
       <span
         id="avatar-error"
         className={`form__input-error ${
-          !isValid && "form__input-error_visible"
+          !isValid && 'form__input-error_visible'
         }`}
       >
         {validationMessage.avatar}

@@ -1,14 +1,22 @@
-import { useEffect, useState, useContext } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import PopupWithForm from "./PopupWithForm";
+import { useRef, useEffect, useState, useContext } from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import PopupWithForm from './PopupWithForm';
 
-export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+export default function EditProfilePopup({
+  isOpen,
+  onClose,
+  onUpdateUser,
+  isSending,
+}) {
+  const inputRef = useRef();
   const currentUser = useContext(CurrentUserContext);
   const [profileData, setProfileData] = useState({});
   const [isValid, setIsValid] = useState(true);
   const [validationMessage, setValidationMessage] = useState({});
 
   useEffect(() => {
+    if (isOpen) inputRef.current.focus();
+
     setProfileData({
       name: currentUser.name,
       about: currentUser.about,
@@ -24,7 +32,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       ...oldData,
       [name]: value,
     }));
-    setIsValid(input.closest("form").checkValidity());
+    setIsValid(input.closest('form').checkValidity());
     setValidationMessage({
       ...validationMessage,
       [name]: input.validationMessage,
@@ -46,27 +54,28 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
       title="Редактировать профиль"
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText="Сохранить"
+      buttonText={isSending ? 'Сохранение...' : 'Сохранить'}
       buttonActive={isValid}
     >
       <input
         className={`form__input ${
-          validationMessage.name && "form__input_type_error"
+          validationMessage.name && 'form__input_type_error'
         }`}
         name="name"
-        id="name"
+        id="name-profile"
         type="text"
         placeholder="Имя"
         minLength="2"
         maxLength="40"
-        value={profileData.name || ""}
+        value={profileData.name || ''}
         onChange={handleChange}
+        ref={inputRef}
         required
       />
       <span
         id="name-error"
         className={`form__input-error ${
-          !isValid && "form__input-error_visible"
+          !isValid && 'form__input-error_visible'
         }`}
       >
         {validationMessage.name}
@@ -74,7 +83,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
       <input
         className={`form__input ${
-          validationMessage.about && "form__input_type_error"
+          validationMessage.about && 'form__input_type_error'
         }`}
         name="about"
         id="about"
@@ -82,14 +91,14 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         placeholder="Профессия"
         minLength="2"
         maxLength="200"
-        value={profileData.about || ""}
+        value={profileData.about || ''}
         onChange={handleChange}
         required
       />
       <span
         id="about-error"
         className={`form__input-error ${
-          !isValid && "form__input-error_visible"
+          !isValid && 'form__input-error_visible'
         }`}
       >
         {validationMessage.about}
