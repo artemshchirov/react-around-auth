@@ -37,8 +37,22 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const tokenCheck = () => {
+      let jwt = localStorage.getItem('jwt');
+      if (jwt) {
+        getContent(jwt)
+          .then((res) => {
+            setUserEmail(res.data.email);
+            setLoggedIn(true);
+            navigate('/');
+          })
+          .catch((err) =>
+            console.error(`Ошибка получения контента пользователя: ${err}`)
+          );
+      }
+    };
     tokenCheck();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -66,21 +80,6 @@ const App = () => {
         setIsLoading(false);
       });
   }, []);
-
-  const tokenCheck = () => {
-    let jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      getContent(jwt)
-        .then((res) => {
-          setUserEmail(res.data.email);
-          setLoggedIn(true);
-          navigate('/');
-        })
-        .catch((err) =>
-          console.error(`Ошибка получения контента пользователя: ${err}`)
-        );
-    }
-  };
 
   const handleRegister = (email, password) => {
     register(password, email)
