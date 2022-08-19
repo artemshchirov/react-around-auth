@@ -12,7 +12,7 @@ export default function Main({
   onCardDelete,
 }) {
   const currentUser = useContext(CurrentUserContext);
-  
+
   return (
     <main className="content page__content">
       <section className="profile section content__section">

@@ -10,6 +10,10 @@ class Api {
       : Promise.reject(`Ошибка, код: ${response.status}`);
   };
 
+  setToken(jwt) {
+    this._token = jwt;
+  }
+
   setAvatar({ avatar }) {
     return fetch(`${this._address}/users/me/avatar`, {
       method: 'PATCH',

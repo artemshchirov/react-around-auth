@@ -41,8 +41,8 @@ const App = () => {
       let jwt = localStorage.getItem('jwt');
       if (jwt) {
         getContent(jwt)
-          .then((res) => {
-            setUserEmail(res.email);
+          .then(({ email }) => {
+            setUserEmail(email);
             setLoggedIn(true);
             navigate('/');
           })
@@ -52,7 +52,7 @@ const App = () => {
       }
     };
     tokenCheck();
-  }, [navigate]);
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -71,7 +71,7 @@ const App = () => {
     api
       .getInitialCards()
       .then((initialCards) => {
-        setCards(initialCards.cards);
+        setCards(initialCards);
       })
       .catch((err) =>
         console.error(
@@ -81,7 +81,7 @@ const App = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [loggedIn]);
 
   const handleRegister = (email, password) => {
     register(email, password)
@@ -104,6 +104,7 @@ const App = () => {
       .then(({ token }) => {
         if (token) {
           localStorage.setItem('jwt', token);
+          api.setToken(token);
           setLoggedIn(true);
           setUserEmail(email);
           navigate('/');
@@ -200,9 +201,9 @@ const App = () => {
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards((state) => {
-          return state.map((c) => (c._id === card._id ? newCard : c));
-        });
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
       })
       .catch((err) =>
         console.error(`Ошибка при добавлении/удалении лайка: ${err}`)
@@ -216,7 +217,7 @@ const App = () => {
     setIsLoading(true);
     api
       .deleteItem(card._id)
-      .then(() => {
+      .then((res) => {
         setCards(cards.filter((c) => c._id !== card._id));
         closeAllPopups();
       })
@@ -232,8 +233,9 @@ const App = () => {
     setIsLoading(true);
     api
       .addItem({ name, link })
-      .then(({ name, link }) => {
-        setCards([{ name, link }, ...cards]);
+      .then((newCard) => {
+        console.log('res: ', newCard);
+        setCards([newCard, ...cards]);
         closeAllPopups();
       })
       .catch((err) =>
