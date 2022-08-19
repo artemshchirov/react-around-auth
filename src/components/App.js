@@ -42,7 +42,7 @@ const App = () => {
       if (jwt) {
         getContent(jwt)
           .then((res) => {
-            setUserEmail(res.data.email);
+            setUserEmail(res.email);
             setLoggedIn(true);
             navigate('/');
           })
@@ -58,11 +58,11 @@ const App = () => {
     setIsLoading(true);
     api
       .getUserInfo()
-      .then(({ name, about, avatar, _id }) => {
-        setCurrentUser({ name, about, avatar, _id });
+      .then(({ _id, name, about, avatar }) => {
+        setCurrentUser({ _id, name, about, avatar });
       })
       .catch((err) =>
-        console.log(`Ошибка при загрузке данных пользователя: ${err}`)
+        console.error(`Ошибка при загрузке данных пользователя: ${err}`)
       )
       .finally(() => {
         setIsLoading(false);
@@ -70,9 +70,11 @@ const App = () => {
 
     api
       .getInitialCards()
-      .then((initialCards) => setCards(initialCards))
+      .then((initialCards) => {
+        setCards(initialCards.cards);
+      })
       .catch((err) =>
-        console.log(
+        console.error(
           `Ошибка при загрузке данных пользователя и создании всех карточек: ${err}`
         )
       )
@@ -82,11 +84,11 @@ const App = () => {
   }, []);
 
   const handleRegister = (email, password) => {
-    register(password, email)
+    register(email, password)
       .then(() => {
         setStatusInfoToolTip(true);
         setLoggedIn(true);
-        navigate('/sign-in');
+        navigate('/signin');
       })
       .catch((err) => {
         setStatusInfoToolTip(false);
@@ -99,9 +101,9 @@ const App = () => {
 
   const handleLogin = (email, password) => {
     authorize(email, password)
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem('jwt', res.token);
+      .then(({ token }) => {
+        if (token) {
+          localStorage.setItem('jwt', token);
           setLoggedIn(true);
           setUserEmail(email);
           navigate('/');
@@ -117,7 +119,7 @@ const App = () => {
   const handleLogout = () => {
     localStorage.removeItem('jwt');
     setLoggedIn(false);
-    navigate('/sign-in');
+    navigate('/signin');
   };
 
   function handleEditAvatarClick() {
@@ -164,7 +166,7 @@ const App = () => {
         closeAllPopups();
       })
       .catch((err) =>
-        console.log(`Ошибка при обновлении name, about пользователя: ${err}`)
+        console.error(`Ошибка при обновлении name, about пользователя: ${err}`)
       )
       .finally(() => {
         setIsLoading(false);
@@ -185,7 +187,7 @@ const App = () => {
         closeAllPopups();
       })
       .catch((err) => {
-        console.log(`Ошибка при обновлении аватара пользователя: ${err}`);
+        console.error(`Ошибка при обновлении аватара пользователя: ${err}`);
       })
       .finally(() => {
         setIsLoading(false);
@@ -194,16 +196,16 @@ const App = () => {
 
   function handleCardLike(card) {
     setIsLoading(true);
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
+        setCards((state) => {
+          return state.map((c) => (c._id === card._id ? newCard : c));
+        });
       })
       .catch((err) =>
-        console.log(`Ошибка при добавлении/удалении лайка: ${err}`)
+        console.error(`Ошибка при добавлении/удалении лайка: ${err}`)
       )
       .finally(() => {
         setIsLoading(false);
@@ -219,23 +221,23 @@ const App = () => {
         closeAllPopups();
       })
       .catch((err) =>
-        console.log(`Ошибка при удалении карточки пользователя: ${err}`)
+        console.error(`Ошибка при удалении карточки пользователя: ${err}`)
       )
       .finally(() => {
         setIsLoading(false);
       });
   }
 
-  function handleAddPlaceSubmit(newCard) {
+  function handleAddPlaceSubmit({ name, link }) {
     setIsLoading(true);
     api
-      .addItem(newCard)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
+      .addItem({ name, link })
+      .then(({ name, link }) => {
+        setCards([{ name, link }, ...cards]);
         closeAllPopups();
       })
       .catch((err) =>
-        console.log(`Ошибка при создании новой карточки пользователя: ${err}`)
+        console.error(`Ошибка при создании новой карточки пользователя: ${err}`)
       )
       .finally(() => {
         setIsLoading(false);
@@ -248,12 +250,12 @@ const App = () => {
         <CurrentUserContext.Provider value={currentUser}>
           <Routes>
             <Route
-              path="/sign-in"
+              path="/signin"
               element={<Login handleLogin={handleLogin} />}
             />
 
             <Route
-              path="/sign-up"
+              path="/signup"
               element={<Register handleRegister={handleRegister} />}
             />
 

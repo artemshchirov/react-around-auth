@@ -1,5 +1,5 @@
-export const baseUrl = 'https://auth.nomoreparties.co';
-const authorization = 'e3cd37b0-56ab-40c1-b26c-66c00d48e156';
+export const baseUrl = 'http://localhost:3000';
+const authorization = localStorage.getItem('jwt');
 
 const handleResponse = (response) => {
   return response.ok
@@ -7,7 +7,7 @@ const handleResponse = (response) => {
     : Promise.reject(`код ${response.status}`);
 };
 
-export const register = (password, email) => {
+export const register = (email, password) => {
   return fetch(`${baseUrl}/signup`, {
     method: 'POST',
     headers: {
@@ -15,8 +15,8 @@ export const register = (password, email) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      password,
       email,
+      password,
     }),
   }).then(handleResponse);
 };
@@ -39,8 +39,8 @@ export const getContent = (jwt) => {
   return fetch(`${baseUrl}/users/me`, {
     method: 'GET',
     headers: {
+      authorization: `Bearer ${jwt}`,
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
   }).then(handleResponse);
 };

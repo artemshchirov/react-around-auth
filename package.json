@@ -16,7 +16,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && scp -r ./build/* artemshchirov@51.250.99.51:/home/artemshchirov/react-around-frontend"
   },
   "eslintConfig": {
     "extends": [

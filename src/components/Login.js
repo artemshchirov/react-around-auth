@@ -49,7 +49,7 @@ function Login({ handleLogin }) {
     <>
       <header className="header page__header">
         <img src={logo} alt="Логотип 'Место'" className="logo" />
-        <Link to="/sign-up" className="header__link">
+        <Link to="/signup" className="header__link">
           Регистрация
         </Link>
       </header>
@@ -57,14 +57,13 @@ function Login({ handleLogin }) {
         <form name="login" onSubmit={handleSubmit} noValidate>
           <fieldset className="sign__form">
             <legend className="sign__title">Вход</legend>
-
             <input
               className={`sign__input ${
                 validationMessage.email && 'sign__input_type_error'
               }`}
               name="email"
-              id="email"
-              type="email"
+              id="email-signin"
+              type="email-signin"
               placeholder="Email"
               minLength="2"
               maxLength="320"
@@ -86,8 +85,8 @@ function Login({ handleLogin }) {
                 validationMessage.password && 'sign__input_type_error'
               }`}
               name="password"
-              id="password"
-              type="current-password"
+              id="password-signin"
+              type="password-signin"
               placeholder="Пароль"
               minLength="2"
               maxLength="15"

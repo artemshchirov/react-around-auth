@@ -17,6 +17,7 @@ function Register({ handleRegister }) {
   const handleChange = (evt) => {
     const input = evt.target;
     const { name, value } = input;
+
     setRegisterData((oldData) => ({
       ...oldData,
       [name]: value,
@@ -48,7 +49,7 @@ function Register({ handleRegister }) {
     <>
       <header className="header page__header">
         <img src={logo} alt="Логотип 'Место'" className="logo" />
-        <Link to="/sign-in" className="header__link">
+        <Link to="/signin" className="header__link">
           Вход
         </Link>
       </header>
@@ -61,8 +62,8 @@ function Register({ handleRegister }) {
                 validationMessage.email && 'sign__input_type_error'
               }`}
               name="email"
-              id="email"
-              type="email"
+              id="email-signup"
+              type="email-signup"
               placeholder="Email"
               minLength="2"
               maxLength="320"
@@ -84,8 +85,8 @@ function Register({ handleRegister }) {
                 validationMessage.password && 'sign__input_type_error'
               }`}
               name="password"
-              id="password"
-              type="password"
+              id="password-signup"
+              type="password-signup"
               placeholder="Пароль"
               minLength="2"
               maxLength="15"
@@ -111,7 +112,7 @@ function Register({ handleRegister }) {
             </button>
           </fieldset>
         </form>
-        <Link to="/sign-in" className="sign__login">
+        <Link to="/signin" className="sign__login">
           Уже зарегестрированы? Войти
         </Link>
       </section>
