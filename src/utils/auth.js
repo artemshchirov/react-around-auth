@@ -1,4 +1,4 @@
-export const baseUrl = 'http://localhost:3000';
+export const baseUrl = 'https://around.backend.nomoredomains.sbs';
 const authorization = localStorage.getItem('jwt');
 
 const handleResponse = (response) => {

@@ -52,7 +52,7 @@ const App = () => {
       }
     };
     tokenCheck();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     setIsLoading(true);
