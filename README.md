@@ -2,7 +2,7 @@
 
 ## Project Link
 
-<https://github.com/artemshchirov/react-around-auth>
+<https://around.nomoredomains.sbs>
 
 ### Description
 
