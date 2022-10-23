@@ -1,14 +1,18 @@
 .logo {
-    padding-left: 27px;
-    width: 103.74px;
-    height: 24.4px;
-    /* box-sizing: border-box; */
+  padding-left: 27px;
+  width: 103.74px;
+  height: 24.4px;
+  opacity: 1;
+}
+
+.logo:hover {
+  opacity: 0.6;
 }
 
 @media screen and (min-width: 698px) {
-    .logo {
-        padding-left: 0;
-        width: 142px;
-        height: 33px;
-    }
+  .logo {
+    padding-left: 0;
+    width: 142px;
+    height: 33px;
+  }
 }

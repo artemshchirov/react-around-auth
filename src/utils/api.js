@@ -7,7 +7,7 @@ class Api {
   _handleResponse = (response) => {
     return response.ok
       ? response.json()
-      : Promise.reject(`Ошибка, код: ${response.status}`);
+      : Promise.reject(`Error: ${response.status}`);
   };
 
   setToken(jwt) {

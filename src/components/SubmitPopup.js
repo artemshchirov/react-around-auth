@@ -16,10 +16,10 @@ export default function SubmitPopup({
     <PopupWithForm
       isOpen={isOpen}
       name="card-delete"
-      title="Вы уверены?"
+      title="Are you sure?"
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText={isSending ? 'Удаление...' : 'Да'}
+      buttonText={isSending ? 'Deleting...' : 'Yes'}
       buttonActive={true}
     ></PopupWithForm>
   );

@@ -36,13 +36,13 @@ function InfoToolTip({ isOpen, onClose, currentStatus }) {
         ></button>
         <img
           src={currentStatus ? successIcon : failIcon}
-          alt="Результат попытки регистрации"
+          alt="Sign up attempt result"
           className="popup__icon"
         />
         <p className="popup__status">
           {currentStatus
-            ? 'Вы успешно зарегистрировались!'
-            : 'Что-то пошло не так! Попробуйте ещё раз.'}
+            ? 'Success! You have now been registered!'
+            : 'Oops, something went wrong! Please try again.'}
         </p>
       </div>
     </div>

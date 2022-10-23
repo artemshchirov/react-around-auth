@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../images/logo-mesto.svg';
+import logo from '../images/logo-around.svg';
 
 function Login({ handleLogin }) {
   const [loginData, setLoginData] = useState({});
@@ -48,15 +48,15 @@ function Login({ handleLogin }) {
   return (
     <>
       <header className="header page__header">
-        <img src={logo} alt="Логотип 'Место'" className="logo" />
+        <img src={logo} alt="logo 'Around'" className="logo" />
         <Link to="/signup" className="header__link">
-          Регистрация
+          Sign up
         </Link>
       </header>
       <section className="sign">
         <form name="login" onSubmit={handleSubmit} noValidate>
           <fieldset className="sign__form">
-            <legend className="sign__title">Вход</legend>
+            <legend className="sign__title">Log in</legend>
             <input
               className={`sign__input ${
                 validationMessage.email && 'sign__input_type_error'
@@ -87,7 +87,7 @@ function Login({ handleLogin }) {
               name="password"
               id="password-signin"
               type="password-signin"
-              placeholder="Пароль"
+              placeholder="Password"
               minLength="2"
               maxLength="15"
               value={loginData.password || ''}
@@ -108,10 +108,13 @@ function Login({ handleLogin }) {
               }`}
               type="submit"
             >
-              Войти
+              Log in
             </button>
           </fieldset>
         </form>
+        <Link to="/signup" className="sign__login">
+          Not a member yet? Sign up here!
+        </Link>
       </section>
     </>
   );

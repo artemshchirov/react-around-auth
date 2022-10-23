@@ -46,19 +46,19 @@ export default function AddPlacePopup({
 
   return (
     <PopupWithForm
-      title="Новое место"
+      title="New place"
       name="add-card"
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText={isSending ? 'Создание...' : 'Сохранить'}
+      buttonText={isSending ? 'Creating...' : 'Create'}
       buttonActive={isValid}
     >
       <input
         className={`form__input ${
           validationMessage.name && 'form__input_type_error'
         }`}
-        placeholder="Название"
+        placeholder="Name"
         type="text"
         name="name"
         id="name-card"
@@ -82,7 +82,7 @@ export default function AddPlacePopup({
         className={`form__input ${
           validationMessage.link && 'form__input_type_error'
         }`}
-        placeholder="Ссылка на картинку"
+        placeholder="Link to image"
         type="url"
         name="link"
         id="link"

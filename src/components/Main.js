@@ -19,7 +19,7 @@ export default function Main({
         <div className="profile__avatar-container" onClick={onEditAvatar}>
           <img
             src={currentUser.avatar}
-            alt="Изображение профиля пользователя"
+            alt="User pic"
             className="profile__avatar"
           />
         </div>

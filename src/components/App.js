@@ -46,9 +46,7 @@ const App = () => {
             setLoggedIn(true);
             navigate('/');
           })
-          .catch((err) =>
-            console.error(`Ошибка получения контента пользователя: ${err}`)
-          );
+          .catch((err) => console.error(`Error loading user content: ${err}`));
       }
     };
     tokenCheck();
@@ -61,9 +59,7 @@ const App = () => {
       .then(({ _id, name, about, avatar }) => {
         setCurrentUser({ _id, name, about, avatar });
       })
-      .catch((err) =>
-        console.error(`Ошибка при загрузке данных пользователя: ${err}`)
-      )
+      .catch((err) => console.error(`Error loading user info: ${err}`))
       .finally(() => {
         setIsLoading(false);
       });
@@ -74,9 +70,7 @@ const App = () => {
         setCards(initialCards);
       })
       .catch((err) =>
-        console.error(
-          `Ошибка при загрузке данных пользователя и создании всех карточек: ${err}`
-        )
+        console.error(`Error loading user info and cards: ${err}`)
       )
       .finally(() => {
         setIsLoading(false);
@@ -92,7 +86,7 @@ const App = () => {
       })
       .catch((err) => {
         setStatusInfoToolTip(false);
-        console.error(`Ошибка регистрации пользователя: ${err}`);
+        console.error(`Error user sign up: ${err}`);
       })
       .finally(() => {
         setIsInfoToolTipOpen(true);
@@ -113,7 +107,7 @@ const App = () => {
       .catch((err) => {
         setStatusInfoToolTip(false);
         setIsInfoToolTipOpen(true);
-        console.error(`Ошибка авторизации пользователя: ${err}`);
+        console.error(`Error user sign in: ${err}`);
       });
   };
 
@@ -166,9 +160,7 @@ const App = () => {
         });
         closeAllPopups();
       })
-      .catch((err) =>
-        console.error(`Ошибка при обновлении name, about пользователя: ${err}`)
-      )
+      .catch((err) => console.error(`Error update name, about: ${err}`))
       .finally(() => {
         setIsLoading(false);
       });
@@ -188,7 +180,7 @@ const App = () => {
         closeAllPopups();
       })
       .catch((err) => {
-        console.error(`Ошибка при обновлении аватара пользователя: ${err}`);
+        console.error(`Error update user profile image: ${err}`);
       })
       .finally(() => {
         setIsLoading(false);
@@ -205,9 +197,7 @@ const App = () => {
           state.map((c) => (c._id === card._id ? newCard : c))
         );
       })
-      .catch((err) =>
-        console.error(`Ошибка при добавлении/удалении лайка: ${err}`)
-      )
+      .catch((err) => console.error(`Error add/remove like: ${err}`))
       .finally(() => {
         setIsLoading(false);
       });
@@ -221,9 +211,7 @@ const App = () => {
         setCards(cards.filter((c) => c._id !== card._id));
         closeAllPopups();
       })
-      .catch((err) =>
-        console.error(`Ошибка при удалении карточки пользователя: ${err}`)
-      )
+      .catch((err) => console.error(`Error delete card: ${err}`))
       .finally(() => {
         setIsLoading(false);
       });
@@ -234,13 +222,10 @@ const App = () => {
     api
       .addItem({ name, link })
       .then((newCard) => {
-        console.log('res: ', newCard);
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) =>
-        console.error(`Ошибка при создании новой карточки пользователя: ${err}`)
-      )
+      .catch((err) => console.error(`Error create card: ${err}`))
       .finally(() => {
         setIsLoading(false);
       });

@@ -3,4 +3,5 @@
     border: none;
     cursor: pointer;
     transition: opacity .1s;
+    text-decoration: none;
 }

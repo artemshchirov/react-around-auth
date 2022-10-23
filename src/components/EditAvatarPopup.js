@@ -39,10 +39,10 @@ export default function EditAvatarPopup({
     <PopupWithForm
       isOpen={isOpen}
       name="edit-avatar"
-      title="Обновить аватар"
+      title="Update profile image"
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText={isSending ? 'Сохранение...' : 'Сохранить'}
+      buttonText={isSending ? 'Saving...' : 'Save'}
       buttonActive={isValid}
     >
       <input
@@ -51,7 +51,7 @@ export default function EditAvatarPopup({
         }`}
         name="avatar"
         id="avatar"
-        placeholder="Ссылка на изображение"
+        placeholder="Link to image"
         type="url"
         ref={inputRef}
         onChange={handleChange}

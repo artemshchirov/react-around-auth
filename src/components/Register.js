@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../images/logo-mesto.svg';
+import logo from '../images/logo-around.svg';
 
 function Register({ handleRegister }) {
   const [registerData, setRegisterData] = useState({});
@@ -50,13 +50,13 @@ function Register({ handleRegister }) {
       <header className="header page__header">
         <img src={logo} alt="Логотип 'Место'" className="logo" />
         <Link to="/signin" className="header__link">
-          Вход
+          Log in
         </Link>
       </header>
       <section className="sign">
         <form name="register" onSubmit={handleSubmit} noValidate>
           <fieldset className="sign__form">
-            <legend className="sign__title">Регистрация</legend>
+            <legend className="sign__title">Sign up</legend>
             <input
               className={`sign__input ${
                 validationMessage.email && 'sign__input_type_error'
@@ -87,7 +87,7 @@ function Register({ handleRegister }) {
               name="password"
               id="password-signup"
               type="password-signup"
-              placeholder="Пароль"
+              placeholder="Password"
               minLength="2"
               maxLength="15"
               value={registerData['password'] || ''}
@@ -108,12 +108,12 @@ function Register({ handleRegister }) {
               }`}
               type="submit"
             >
-              Зарегистрироваться
+              Sign up
             </button>
           </fieldset>
         </form>
         <Link to="/signin" className="sign__login">
-          Уже зарегестрированы? Войти
+          Already a member? Log in here!
         </Link>
       </section>
     </>

@@ -4,7 +4,7 @@ const authorization = localStorage.getItem('jwt');
 const handleResponse = (response) => {
   return response.ok
     ? response.json()
-    : Promise.reject(`код ${response.status}`);
+    : Promise.reject(`Error ${response.status}`);
 };
 
 export const register = (email, password) => {
